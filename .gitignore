@@ -1,0 +1,38 @@
+# secrets
+.env
+**/.env
+.env.*
+**/.env.*
+!**/.env.example
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.db
+*.db-journal
+*.sqlite3
+# node
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+# logs
+*.log
+# editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+# generated output
+demo_output/
+demo_output*.md
+docs
