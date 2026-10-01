@@ -15,6 +15,11 @@ class Settings(BaseSettings):
     qdrant_url: str = ""
     qdrant_api_key: str = ""
     qdrant_collection: str = "story_memory"
+    # Postgres connections per process. Supabase's session pooler caps ALL clients (on the free
+    # plan: 15), and a deploy briefly runs old + new instances, so keep one process well under half.
+    db_pool_size: int = 3
+    db_max_overflow: int = 2
+    checkpoint_pool_size: int = 2
 
     # auth
     jwt_secret: str = "change-me"

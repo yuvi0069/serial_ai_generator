@@ -132,6 +132,8 @@ On the free tier the dollar caps act as token budgets, because the cost is estim
 ## Deploying
 
 - **Backend** runs on Render, Railway or Fly.io.
+  - Use **Python 3.11** (pinned in `.python-version`; on Render you can also set `PYTHON_VERSION=3.11.9`). Newer Pythons such as 3.14 have no wheels for the pinned `pydantic-core`, and the build fails compiling it with Rust/maturin.
+  - Root directory: `backend`. Build command: `pip install -r requirements.txt`.
   - Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
   - Copy every `.env` variable into the host's settings.
   - Set `CORS_ORIGINS` to your frontend URL.
@@ -154,6 +156,7 @@ On the free tier the dollar caps act as token budgets, because the cost is estim
 
 | Symptom | Fix |
 |---|---|
+| `EMAXCONNSESSION max clients reached in session mode` | Too many connections across all processes using the database (Supabase's session pooler caps them, 15 on the free plan). Each backend uses up to 7 (`DB_POOL_SIZE` + `DB_MAX_OVERFLOW` + `CHECKPOINT_POOL_SIZE`). Stop other backends pointed at the same DB (e.g. a local one), or raise the pool size in Supabase → Database → Settings. |
 | `prepared statement ... already exists` or checkpointer errors | You're on the 6543 pooler. Switch to the Session pooler URI (port 5432). |
 | Story shows "Stopped by an error" | Open Story bible → Trace for the failing step (errors are in red), fix the cause (often a rate limit or a model id), then press **Retry**. It resumes from the last checkpoint. |
 | `model_not_found` (404) from Groq | Groq retired that model id. List the ones your key can use (`GET https://api.groq.com/openai/v1/models`), set the `*_MODEL` variables in `.env`, restart, then press **Retry**. |

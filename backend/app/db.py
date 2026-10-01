@@ -30,7 +30,8 @@ else:
     # prepare_threshold=None disables server-side prepared statements -> safe behind Supabase poolers.
     engine = create_engine(
         normalize_db_url(settings.database_url),
-        pool_pre_ping=True, pool_size=5, max_overflow=5, pool_recycle=300,
+        pool_pre_ping=True, pool_size=settings.db_pool_size, max_overflow=settings.db_max_overflow,
+        pool_recycle=300, pool_timeout=60,
         connect_args={"prepare_threshold": None},
     )
 

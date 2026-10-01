@@ -25,7 +25,8 @@ def get_graph():
             from langgraph.checkpoint.postgres import PostgresSaver
             from psycopg.rows import dict_row
             from psycopg_pool import ConnectionPool
-            _pool = ConnectionPool(conninfo=raw_pg_url(settings.database_url), max_size=5, open=True,
+            _pool = ConnectionPool(conninfo=raw_pg_url(settings.database_url), min_size=1,
+                                   max_size=settings.checkpoint_pool_size, max_idle=300, open=True,
                                    kwargs={"autocommit": True, "prepare_threshold": None, "row_factory": dict_row})
             cp = PostgresSaver(_pool)
             cp.setup()
